@@ -1,22 +1,20 @@
 package org.enset.ebankchatboot.controllers;
 
 
-import org.springframework.ai.chat.client.ChatClient;
+import lombok.RequiredArgsConstructor;
+import org.enset.ebankchatboot.agents.EbankAiAgent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class EbankChatbotController {
 
-    private final ChatClient chatClient;
-
-    public EbankChatbotController(ChatClient.Builder chatClientBuilder) {
-        this.chatClient = chatClientBuilder.build();
-    }
+    private final EbankAiAgent ebankAiAgent;
 
     @GetMapping("/chat")
     public String chat(@RequestParam(name = "query", defaultValue = "Bonjour") String query) {
-        return chatClient.prompt(query).call().content();
+        return ebankAiAgent.chat(query);
     }
 }
